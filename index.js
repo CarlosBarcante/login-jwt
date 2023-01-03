@@ -1,10 +1,10 @@
 require('dotenv').config();
 const express = require('express');
-const routes = require('./server/routes');
+const userRouter = require('./server/routes/user.js');
 const app = express();
 
 app.use(express.json());
 
-app.get('/api', routes);
+app.use('/api/user', userRouter);
 
 app.listen(process.env.PORT, () => { console.log('Server running...') });
