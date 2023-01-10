@@ -4,9 +4,8 @@ const bcrypt = require('bcryptjs');
 const userController = {
     register: async function (req, res) {
         const selectedUser = await User.findOneAndUpdate({ email: req.body.email });
-
         if (selectedUser) {
-            return res.status(400).send('Email already exists');
+            return res.status(400).send('Email already exists.');
         }
 
         const user = new User({
@@ -22,9 +21,18 @@ const userController = {
             res.status(400).send(error.message);
         }
     },
-    login: function (req, res) {
-        console.log('login');
-        res.json('Login');
+    login: async function (req, res) {
+        const selectedUser = await User.findOne({ email: req.body.email });
+        if (!selectedUser) {
+            return res.status(400).send("Email or Password invalid");
+        }
+
+        const passwordMatch = bcrypt.compareSync(req.body.password, selectedUser.password);
+        if (!passwordMatch) {
+            return res.status(400).send("Email or Password invalid");
+        }
+
+        res.send("User Logged");
     }
 }
 
