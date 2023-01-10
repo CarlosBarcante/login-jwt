@@ -3,6 +3,12 @@ const bcrypt = require('bcryptjs');
 
 const userController = {
     register: async function (req, res) {
+        const selectedUser = await User.findOneAndUpdate({ email: req.body.email });
+
+        if (selectedUser) {
+            return res.status(400).send('Email already exists');
+        }
+
         const user = new User({
             name: req.body.name,
             email: req.body.email,
