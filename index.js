@@ -1,11 +1,11 @@
 require('dotenv').config();
 require('./server/database/mongoConnection');
 const express = require('express');
-const userRouter = require('./server/routes/user');
+const routes = require('./server/routes/index');
 const app = express();
 
 app.use(express.json());
 
-app.use('/api', userRouter);
+app.use('/api', routes);
 
 app.listen(process.env.PORT, () => { console.log('Server running...') });
