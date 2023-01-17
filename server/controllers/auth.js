@@ -6,7 +6,13 @@ function auth(req, res, next) {
         return res.status(401).send('Access Denied');
     }
 
-    res.send('Token recebido');
+    try {
+        const userVerified = jwt.verify(token, process.env.TOKEN_SECRET);
+        req.user = userVerified;
+        next()
+    } catch (error) {
+        return res.status(401).send('Access Denied');
+    }
 }
 
 module.exports = auth;

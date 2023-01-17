@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const userController = {
     register: async function (req, res) {
-        const selectedUser = await User.findOneAndUpdate({ email: req.body.email });
+        const selectedUser = await User.findOne({ email: req.body.email });
         if (selectedUser) {
             return res.status(400).send('Email already exists.');
         }
@@ -33,7 +33,7 @@ const userController = {
             return res.status(400).send("Email or Password invalid");
         }
 
-        const token = jwt.sign({ _id: selectedUser._id, email: selectedUser.email }, process.env.TOKEN_SECRET);
+        const token = jwt.sign({ _id: selectedUser._id, email: selectedUser.email, admin: selectedUser.admin }, process.env.TOKEN_SECRET);
 
         res.header('authorization-token', token)
         res.send("User Logged");
