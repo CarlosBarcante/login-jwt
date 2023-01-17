@@ -4,9 +4,15 @@ const auth = require('../controllers/auth');
 
 router.get('/', auth, (req, res) => {
     if (req.user.admin) {
-        res.send('Este dado só deve ser visto por um administrador');
+        res.json({
+            success: true,
+            message: 'Este dado só deve ser visto por um administrador.'
+        })
     } else {
-        res.status(401).send('Access Denied');
+        res.json({
+            success: false,
+            message: 'Access Denied'
+        })
     }
 })
 

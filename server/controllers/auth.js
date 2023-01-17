@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 function auth(req, res, next) {
     const token = req.header('authorization-token');
     if (!token) {
-        return res.status(401).send('Access Denied');
+        return res.json({
+            success: false,
+            message: 'Need to be logged to access this area.'
+        })
     }
 
     try {
@@ -11,7 +14,10 @@ function auth(req, res, next) {
         req.user = userVerified;
         next()
     } catch (error) {
-        return res.status(401).send('Access Denied');
+        return res.json({
+            success: false,
+            message: 'Invalid authentication, try to login again.'
+        })
     }
 }
 
